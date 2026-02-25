@@ -26,6 +26,19 @@ def api_root(request, format=None):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = 'pk'
+
+    def get_object(self):
+        """Override to handle MongoDB ObjectID lookups"""
+        from bson import ObjectId
+        try:
+            obj_id = self.kwargs.get(self.lookup_field)
+            # Try to convert to ObjectId if it's a valid hex string
+            if len(obj_id) == 24:
+                return self.queryset.get(_id=ObjectId(obj_id))
+        except:
+            pass
+        return super().get_object()
 
 
 class TeamViewSet(viewsets.ModelViewSet):

@@ -6,6 +6,10 @@ class User(models.Model):
     username = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True, default='')
+    last_name = models.CharField(max_length=100, blank=True, default='')
+    team = models.CharField(max_length=100, blank=True, default='')
+    date_joined = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         db_table = 'users'
@@ -57,6 +61,9 @@ class Workout(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     exercises = models.JSONField(default=list)
+    difficulty_level = models.CharField(max_length=50, default='Intermediate')
+    duration_minutes = models.IntegerField(default=30)
+    calories_target = models.IntegerField(default=300)
 
     class Meta:
         db_table = 'workouts'
