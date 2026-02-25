@@ -15,12 +15,12 @@ function Users() {
     team: ''
   });
 
-  const apiUrl = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api`;
+  const apiUrl = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/users`;
 
   const fetchUsers = async () => {
     try {
-      console.log('Fetching users from:', `${apiUrl}/users/`);
-      const response = await fetch(`${apiUrl}/users/`);
+      console.log('Fetching users from:', `${apiUrl}/`);
+      const response = await fetch(`${apiUrl}/`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -41,7 +41,7 @@ function Users() {
 
   const fetchTeams = async () => {
     try {
-      const response = await fetch(`${apiUrl}/teams/`);
+      const response = await fetch(`https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/teams/`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -95,7 +95,7 @@ function Users() {
     e.preventDefault();
     
     try {
-      const response = await fetch(`${apiUrl}/users/${editingUser.id}/`, {
+      const response = await fetch(`${apiUrl}/${editingUser.id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
