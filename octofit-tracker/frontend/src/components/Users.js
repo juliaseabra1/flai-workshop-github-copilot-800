@@ -19,13 +19,17 @@ function Users() {
 
   const fetchUsers = async () => {
     try {
+      console.log('Fetching users from:', `${apiUrl}/users/`);
       const response = await fetch(`${apiUrl}/users/`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
+      console.log('Users data received:', data);
       const usersData = data.results || data;
+      console.log('Users array:', usersData);
+      console.log('First user:', usersData[0]);
       setUsers(usersData);
       setLoading(false);
     } catch (err) {
@@ -135,23 +139,26 @@ function Users() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td><strong>{user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.username.charAt(0).toUpperCase() + user.username.slice(1)}</strong></td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.team_name || user.team || <span className="text-muted">No team</span>}</td>
-                <td>{user.date_joined ? new Date(user.date_joined).toLocaleDateString() : 'N/A'}</td>
-                <td>
-                  <button 
-                    className="btn btn-sm btn-primary" 
-                    onClick={() => handleEdit(user)}
-                  >
-                    ✏️ Edit
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {users.map((user) => {
+              console.log('Rendering user:', user);
+              return (
+                <tr key={user.id}>
+                  <td><strong>{user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : (user.username ? user.username.charAt(0).toUpperCase() + user.username.slice(1) : 'Unknown')}</strong></td>
+                  <td>{user.username || 'N/A'}</td>
+                  <td>{user.email || 'N/A'}</td>
+                  <td>{user.team_name || user.team || <span className="text-muted">No team</span>}</td>
+                  <td>{user.date_joined ? new Date(user.date_joined).toLocaleDateString() : 'N/A'}</td>
+                  <td>
+                    <button 
+                      className="btn btn-sm btn-primary" 
+                      onClick={() => handleEdit(user)}
+                    >
+                      ✏️ Edit
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
